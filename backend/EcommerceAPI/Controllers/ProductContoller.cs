@@ -16,6 +16,18 @@ public class ProductsController : ControllerBase
         _context = context;
     }
 
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
+    {
+        return Ok();
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<ProductDto>> GetProduct(int id)
+    {
+        return Ok();
+    }
+
     [HttpPost]
     public async Task<ActionResult<Product>> CreateProduct(CreateProductDto dto)
     {
@@ -35,5 +47,33 @@ public class ProductsController : ControllerBase
             nameof(CreateProduct),
             new { id = product.Id },
             product);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateProduct(int id, UpdateProductDto dto)
+    {
+        var product = await _context.Products.FindAsync(id);
+
+        if (product == null)
+        {
+            return NotFound($"Product with ID {id} was not found");
+        }
+
+        product.Name = dto.Name;
+        product.Description = dto.Description;
+        product.Price = dto.Price;
+        product.Stock = dto.Stock;
+        product.ImageUrl = dto.ImageUrl;
+        product.IsActive = dto.IsActive;
+
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteProduct(int id)
+    {
+        return Ok();
     }
 }

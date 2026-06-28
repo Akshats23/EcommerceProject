@@ -2,6 +2,7 @@ using EcommerceAPI.Data;
 using EcommerceAPI.DTOs;
 using EcommerceAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EcommerceAPI.Controllers;
 
@@ -16,16 +17,47 @@ public class ProductsController : ControllerBase
         _context = context;
     }
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
-    {
-        return Ok();
-    }
+[HttpGet]
+public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
+{
+    var products = await _context.Products
+        .Select(product => new ProductDto
+        {
+            Id = product.Id,
+            Name = product.Name,
+            Description = product.Description,
+            Price = product.Price,
+            Stock = product.Stock,
+            ImageUrl = product.ImageUrl,
+            IsActive = product.IsActive
+        })
+        .ToListAsync();
+
+    return Ok(products);
+}
 
     [HttpGet("{id}")]
     public async Task<ActionResult<ProductDto>> GetProduct(int id)
     {
-        return Ok();
+        var product = await _context.Products.FindAsync(id);
+
+        if (product == null)
+        {
+            return NotFound($"Product with ID {id} was not found.");
+        }
+
+        var productDto = new ProductDto
+        {
+            Id = product.Id,
+            Name = product.Name,
+            Description = product.Description,
+            Price = product.Price,
+            Stock = product.Stock,
+            ImageUrl = product.ImageUrl,
+            IsActive = product.IsActive
+        };
+
+        return Ok(productDto);
     }
 
     [HttpPost]
@@ -74,6 +106,15 @@ public class ProductsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteProduct(int id)
     {
+        var product = await _context.Products.FindAsync(id);
+
+        if (product == null)
+        {
+            return NotFound($"Product with ID {id} was not found.");
+        }
+
+        product.IsActive = false;
+
         return Ok();
     }
 }

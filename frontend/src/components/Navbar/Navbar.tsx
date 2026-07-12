@@ -5,7 +5,7 @@ import {
   Button,
   IconButton,
 } from "@mui/material";
-
+import { Link } from "react-router-dom";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
@@ -22,6 +22,13 @@ function Navbar() {
         <Button color="inherit">Orders</Button>
         <Button color="inherit">Categories</Button>
         <Button color="inherit">Customers</Button>
+         <Button
+          color="inherit"
+          component={Link}
+          to="/products/new"
+        >
+          Add Product
+        </Button>
 
         <IconButton color="inherit">
           <NotificationsIcon />

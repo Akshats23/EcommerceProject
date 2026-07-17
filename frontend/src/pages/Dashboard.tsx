@@ -9,13 +9,14 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from "@mui/icons-material/Edit";
 import { DataGrid } from "@mui/x-data-grid";
 import { Container } from "@mui/material";
 import type { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 
 import type { Product } from "../types/product";
 import { getAllProducts } from "../services/productService";
+import { Link } from "react-router-dom";
 
 type ProductFilter = "all" | "active" | "archived";
 
@@ -105,12 +106,11 @@ const Dashboard = () => {
       filterable: false,
       renderCell: (params: GridRenderCellParams<Product>) => (
         <Stack direction="row" spacing={1}>
-                     <Button
-              variant="contained"
-              startIcon={<EditIcon />}
-              //onClick={handleEmployeeEdit}
-            >
-            </Button>
+          <Button
+            variant="contained"
+            startIcon={<EditIcon />}
+            //onClick={handleProductEdit}
+          ></Button>
         </Stack>
       ),
     },
@@ -130,7 +130,14 @@ const Dashboard = () => {
         >
           <Typography variant="h4">Products</Typography>
 
-          <Button variant="contained">Add Product</Button>
+          <Button
+            variant="contained"
+            color="inherit"
+            component={Link}
+            to="/products/new"
+          >
+            Add Product
+          </Button>
         </Stack>
 
         <Paper sx={{ p: 2, mb: 3 }}>

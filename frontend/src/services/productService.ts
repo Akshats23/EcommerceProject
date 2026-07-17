@@ -1,17 +1,21 @@
 import axios from "axios";
 import type { Product } from "../types/product";
-//const API_URL = "https://localhost:5001/api/products";
+import type { CreateProduct } from "../types/createProduct";
 const API_URL = "http://localhost:5001/api/products";
 
-// export const getAllProducts = async (): Promise<Product[]> => {
-//     const response = await axios.get<Product[]>(API_URL);
-//     return response.data;
-// };
-
 export const getAllProducts = async (): Promise<Product[]> => {
-    const response = await axios.get<Product[]>(API_URL);
+  const response = await axios.get<Product[]>(
+    `${API_URL}/Get-All-Products`
+  );
 
-    console.log("API Response:", response.data);
+  return response.data;
+};
 
-    return response.data;
+export const addNewProduct = async (product: CreateProduct,): Promise<Product> => {
+  const response = await axios.post<Product>(
+    `${API_URL}/Create-Product`,
+    product,
+  );
+
+  return response.data;
 };

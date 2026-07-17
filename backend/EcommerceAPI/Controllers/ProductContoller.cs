@@ -17,26 +17,35 @@ public class ProductsController : ControllerBase
         _context = context;
     }
 
-[HttpGet]
-public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
-{
-    var products = await _context.Products
-        .Select(product => new ProductDto
-        {
-            Id = product.Id,
-            Name = product.Name,
-            Description = product.Description,
-            Price = product.Price,
-            Stock = product.Stock,
-            ImageUrl = product.ImageUrl,
-            IsActive = product.IsActive
-        })
-        .ToListAsync();
+    /// <summary>
+    /// This Function gets all products int the database
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("Get-All-Products")]
+    public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
+    {
+        var products = await _context.Products
+            .Select(product => new ProductDto
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                Stock = product.Stock,
+                ImageUrl = product.ImageUrl,
+                IsActive = product.IsActive
+            })
+            .ToListAsync();
 
-    return Ok(products);
-}
+        return Ok(products);
+    }
 
-    [HttpGet("{id}")]
+    /// <summary>
+    /// This function gets a specific product in the database
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpGet("Get-Product/{id}")]
     public async Task<ActionResult<ProductDto>> GetProduct(int id)
     {
         var product = await _context.Products.FindAsync(id);
@@ -60,7 +69,12 @@ public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
         return Ok(productDto);
     }
 
-    [HttpPost]
+    /// <summary>
+    /// This function creates a new product
+    /// </summary>
+    /// <param name="dto"></param>
+    /// <returns></returns>
+    [HttpPost("Create-Product")]
     public async Task<ActionResult<Product>> CreateProduct(CreateProductDto dto)
     {
         var product = new Product
@@ -81,7 +95,13 @@ public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
             product);
     }
 
-    [HttpPut("{id}")]
+    /// <summary>
+    /// This function updates a product 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="dto"></param>
+    /// <returns></returns>
+    [HttpPut("Update-Product/{id}")]
     public async Task<IActionResult> UpdateProduct(int id, UpdateProductDto dto)
     {
         var product = await _context.Products.FindAsync(id);
@@ -103,7 +123,12 @@ public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
         return NoContent();
     }
 
-    [HttpDelete("{id}")]
+    /// <summary>
+    /// This function deletes a product
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpDelete("Delete-Product/{id}")]
     public async Task<IActionResult> DeleteProduct(int id)
     {
         var product = await _context.Products.FindAsync(id);

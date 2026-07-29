@@ -13,10 +13,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import { DataGrid } from "@mui/x-data-grid";
 import { Container } from "@mui/material";
 import type { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-
 import type { Product } from "../types/product";
 import { getAllProducts } from "../services/productService";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 type ProductFilter = "all" | "active" | "archived";
 
@@ -24,6 +24,7 @@ const Dashboard = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [filter, setFilter] = useState<ProductFilter>("active");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadProducts();
@@ -109,8 +110,10 @@ const Dashboard = () => {
           <Button
             variant="contained"
             startIcon={<EditIcon />}
-            //onClick={handleProductEdit}
-          ></Button>
+            onClick={() => navigate(`/products/edit/${params.row.id}`)}
+          >
+            Edit
+          </Button>
         </Stack>
       ),
     },

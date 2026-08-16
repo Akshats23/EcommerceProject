@@ -99,24 +99,31 @@ const Dashboard = () => {
         <>{new Date(params.row.createdAt).toLocaleDateString()}</>
       ),
     },
-    {
-      field: "actions",
-      headerName: "Actions",
-      flex: 1.5,
-      sortable: false,
-      filterable: false,
-      renderCell: (params: GridRenderCellParams<Product>) => (
-        <Stack direction="row" spacing={1}>
-          <Button
-            variant="contained"
-            startIcon={<EditIcon />}
-            onClick={() => navigate(`/products/edit/${params.row.id}`)}
-          >
-            Edit
-          </Button>
-        </Stack>
-      ),
-    },
+  {
+  field: "actions",
+  headerName: "Actions",
+  flex: 1,
+  align: "center",
+  headerAlign: "center",
+  renderCell: (params) => (
+    <Button
+      variant="outlined"
+      size="small"
+      startIcon={<EditIcon />}
+      onClick={() => navigate(`/products/edit/${params.row.id}`)}
+      sx={{
+        color: "#6366F1",
+        borderColor: "#6366F1",
+        "&:hover": {
+          borderColor: "#4F46E5",
+          backgroundColor: "rgba(99, 102, 241, 0.08)",
+        },
+      }}
+    >
+      Edit
+    </Button>
+  ),
+}
   ];
 
   return (
